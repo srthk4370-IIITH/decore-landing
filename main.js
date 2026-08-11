@@ -607,14 +607,22 @@ if (FINE && !REDUCED) {
     if(win) win.classList.remove('is-on');
   }
 
+  function centerOf(el) {
+    const r = el.getBoundingClientRect();
+    return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+  }
+
   function getHitSlot(d) {
-    let best = null;
+    const c = centerOf(d.target);
+    let best = null, bestD = Infinity;
     slots.forEach((s) => {
       if (s.classList.contains('is-filled')) return;
       if (s.dataset.letter !== d.target.dataset.letter) return;
-      if (d.hitTest(s, "15%")) best = s;
+      const sc = centerOf(s);
+      const dist = Math.hypot(sc.x - c.x, sc.y - c.y);
+      if (dist < bestD) { bestD = dist; best = s; }
     });
-    return best;
+    return bestD < 140 ? best : null;
   }
 
   function createConfetti() {
@@ -699,27 +707,18 @@ if (FINE && !REDUCED) {
       }
 
       const tile = this.target;
-      const stateBefore = tile.getBoundingClientRect();
       
+      // Instantly append and lock it perfectly into the slot
       slot.appendChild(tile);
       gsap.set(tile, { clearProps: "all" });
       gsap.set(tile, { x: 0, y: 0, left: 0, top: 0, width: '100%', height: '100%' });
-      
-      const stateAfter = tile.getBoundingClientRect();
-      
-      gsap.from(tile, {
-        x: stateBefore.left - stateAfter.left,
-        y: stateBefore.top - stateAfter.top,
-        rotation: 0,
-        duration: 0.3,
-        ease: 'power3.out',
-        onComplete: checkWin
-      });
       
       slot.classList.add('is-filled');
       tile.classList.add('is-locked');
       tile.dataset.placed = slot.dataset.letter;
       this.disable();
+      
+      checkWin();
     }
   });
 
