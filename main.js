@@ -708,23 +708,33 @@ if (FINE && !REDUCED) {
 
       const tc = centerOf(this.target);
       const sc = centerOf(slot);
-      gsap.to(this.target, {
+      const tile = this.target;
+      gsap.to(tile, {
         x: `+=${sc.x - tc.x}`,
         y: `+=${sc.y - tc.y}`,
         rotation: 0,
-        duration: 0.42,
+        duration: 0.3,
         ease: 'power4.out',
-        onComplete: checkWin
+        onComplete: () => {
+          slot.appendChild(tile);
+          gsap.set(tile, { x: 0, y: 0, left: 0, top: 0, width: '100%', height: '100%' });
+          checkWin();
+        }
       });
       slot.classList.add('is-filled');
-      this.target.classList.add('is-locked');
-      this.target.dataset.placed = slot.dataset.letter;
+      tile.classList.add('is-locked');
+      tile.dataset.placed = slot.dataset.letter;
       this.disable();
     }
   });
 
   const init = () => {
-    tiles.forEach((t) => { const d = Draggable.get(t); if (d) d.enable(); });
+    tiles.forEach((t) => { 
+      letters.appendChild(t);
+      gsap.set(t, { width: '', height: '' });
+      const d = Draggable.get(t); 
+      if (d) d.enable(); 
+    });
     scatter();
   };
 

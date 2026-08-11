@@ -683,6 +683,7 @@ body.is-loaded .preloader { pointer-events: none; }
 .play__board { position: relative; margin-top: clamp(3rem, 8vh, 5rem); min-height: 60vh; }
 .play__slots { display: flex; flex-wrap: wrap; gap: clamp(0.4rem, 1.4vw, 1.2rem); }
 .slot {
+  position: relative;
   width: clamp(52px, 12vw, 150px);
   aspect-ratio: 1;
   display: grid;
