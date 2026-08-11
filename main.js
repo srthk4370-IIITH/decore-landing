@@ -567,7 +567,7 @@ if (FINE && !REDUCED) {
   const slots = [...document.querySelectorAll('#playSlots .slot')];
   const win = document.getElementById('playWin');
   const reset = document.getElementById('playReset');
-  const SNAP = 90;
+  const SNAP = 160;
   
   const floatTweens = new Map();
 
@@ -706,11 +706,11 @@ if (FINE && !REDUCED) {
         return;
       }
 
-      const tr = this.target.getBoundingClientRect();
-      const sr = slot.getBoundingClientRect();
+      const tc = centerOf(this.target);
+      const sc = centerOf(slot);
       gsap.to(this.target, {
-        x: `+=${sr.left - tr.left}`,
-        y: `+=${sr.top - tr.top}`,
+        x: `+=${sc.x - tc.x}`,
+        y: `+=${sc.y - tc.y}`,
         rotation: 0,
         duration: 0.42,
         ease: 'power4.out',
