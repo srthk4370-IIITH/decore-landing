@@ -567,7 +567,6 @@ if (FINE && !REDUCED) {
   const slots = [...document.querySelectorAll('#playSlots .slot')];
   const win = document.getElementById('playWin');
   const reset = document.getElementById('playReset');
-  const SNAP = 160;
   
   const floatTweens = new Map();
 
@@ -608,22 +607,14 @@ if (FINE && !REDUCED) {
     if(win) win.classList.remove('is-on');
   }
 
-  function centerOf(el) {
-    const r = el.getBoundingClientRect();
-    return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
-  }
-
-  function nearestSlot(tile) {
-    const c = centerOf(tile);
-    let best = null, bestD = Infinity;
+  function getHitSlot(d) {
+    let best = null;
     slots.forEach((s) => {
       if (s.classList.contains('is-filled')) return;
-      if (s.dataset.letter !== tile.dataset.letter) return;
-      const sc = centerOf(s);
-      const d = Math.hypot(sc.x - c.x, sc.y - c.y);
-      if (d < bestD) { bestD = d; best = s; }
+      if (s.dataset.letter !== d.target.dataset.letter) return;
+      if (d.hitTest(s, "15%")) best = s;
     });
-    return bestD < SNAP ? best : null;
+    return best;
   }
 
   function createConfetti() {
@@ -683,14 +674,15 @@ if (FINE && !REDUCED) {
       this.target.style.zIndex = 10;
     },
     onDrag() {
-      const hit = nearestSlot(this.target);
+      const hit = getHitSlot(this);
       slots.forEach((s) => s.classList.toggle('is-near', s === hit));
     },
     onRelease() {
       this.target.classList.remove('is-dragging');
       gsap.to(this.target, { scale: 1, duration: 0.2, ease: 'power3.out' });
-      const slot = nearestSlot(this.target);
+      const slot = getHitSlot(this);
       slots.forEach((s) => s.classList.remove('is-near'));
+      
       if (!slot) {
         if (!REDUCED) {
           const tween = gsap.to(this.target, {
@@ -706,21 +698,24 @@ if (FINE && !REDUCED) {
         return;
       }
 
-      const tc = centerOf(this.target);
-      const sc = centerOf(slot);
       const tile = this.target;
-      gsap.to(tile, {
-        x: `+=${sc.x - tc.x}`,
-        y: `+=${sc.y - tc.y}`,
+      const stateBefore = tile.getBoundingClientRect();
+      
+      slot.appendChild(tile);
+      gsap.set(tile, { clearProps: "all" });
+      gsap.set(tile, { x: 0, y: 0, left: 0, top: 0, width: '100%', height: '100%' });
+      
+      const stateAfter = tile.getBoundingClientRect();
+      
+      gsap.from(tile, {
+        x: stateBefore.left - stateAfter.left,
+        y: stateBefore.top - stateAfter.top,
         rotation: 0,
         duration: 0.3,
-        ease: 'power4.out',
-        onComplete: () => {
-          slot.appendChild(tile);
-          gsap.set(tile, { x: 0, y: 0, left: 0, top: 0, width: '100%', height: '100%' });
-          checkWin();
-        }
+        ease: 'power3.out',
+        onComplete: checkWin
       });
+      
       slot.classList.add('is-filled');
       tile.classList.add('is-locked');
       tile.dataset.placed = slot.dataset.letter;
@@ -731,7 +726,7 @@ if (FINE && !REDUCED) {
   const init = () => {
     tiles.forEach((t) => { 
       letters.appendChild(t);
-      gsap.set(t, { width: '', height: '' });
+      gsap.set(t, { clearProps: "all" });
       const d = Draggable.get(t); 
       if (d) d.enable(); 
     });
