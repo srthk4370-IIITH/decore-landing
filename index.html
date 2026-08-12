@@ -7,48 +7,31 @@
 <meta name="description" content="Compositions is Decore's design battle arena. Six events, one scoreboard, prizes worth 5,000 rupees. Skribbl on the main stage." />
 <meta property="og:title" content="Compositions: Design Battles" />
 <meta property="og:description" content="Six design battles. One scoreboard. Prizes worth 5,000 rupees." />
-<meta property="og:image" content="assets/refs/ref-hero.jpg" />
+<meta property="og:image" content="assets/prizes-canva.jpg" />
 <link rel="icon" href="assets/logo.png" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-<!-- ============ PRELOADER ============ -->
-<div class="preloader" id="preloader" aria-hidden="true">
-  <div class="preloader__inner">
-    <img src="assets/logo.png" alt="" class="preloader__mark" />
-    <div class="preloader__word" id="preWord">
-      <span>C</span><span>O</span><span>M</span><span>P</span><span>O</span><span>S</span><span>I</span><span>T</span><span>I</span><span>O</span><span>N</span><span>S</span>
-    </div>
-  </div>
-  <div class="preloader__count"><span id="preCount">00</span></div>
-</div>
-
-<!-- ============ CURSOR ============ -->
-<div class="cursor" id="cursor" aria-hidden="true">
-  <div class="cursor__ring" id="cursorRing"><span class="cursor__label" id="cursorLabel"></span></div>
-  <div class="cursor__dot" id="cursorDot"></div>
-</div>
-
+<div class="cursor" id="cursor" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
 
 <!-- ============ NAV ============ -->
 <header class="nav" id="nav">
-  <a class="nav__brand" href="#top" data-cursor="home">
+  <a class="nav__brand" href="#top">
     <img src="assets/logo.png" alt="Decore" />
     <span>Decore</span>
   </a>
   <nav class="nav__links" aria-label="Sections">
-    <a href="#skribbl" data-magnet>Skribbl</a>
-    <a href="#battles" data-magnet>Battles</a>
-    <a href="#points" data-magnet>Points</a>
-    <a href="#prizes" data-magnet>Prizes</a>
+    <a href="#skribbl">Skribbl</a>
+    <a href="#battles">Battles</a>
+    <a href="#prizes">Prizes</a>
   </nav>
-  <span class="btn btn--sm is-locked" style="pointer-events: none;">FCFS</span>
+  <span class="tag">Entry is first come, first served</span>
 </header>
 
 <main id="top">
@@ -59,232 +42,130 @@
 
   <h1 class="hero__title">
     <span class="arc" id="arcWord" aria-label="Compositions"></span>
-    <span class="hero__sub-line">
-      <em class="hl hl--serif" data-magnet>Design</em> Battles
-    </span>
+    <span class="hero__sub">Design Battles</span>
   </h1>
 
-  <div class="hero__foot">
-    <div>
-      <p class="hero__lede">Six events. One scoreboard. One winner walks away with the crown.</p>
-      <div class="hero__actions">
-        <span class="btn btn--lg is-locked" style="pointer-events: none; border-color: transparent; color: var(--red); padding-left: 0;">Registration is FCFS</span>
-        <span class="hero__meta"><span class="dot-sep">IIIT</span> Design Society</span>
-      </div>
-    </div>
-
-    <div class="hero__gallery" id="heroGallery">
-      <figure class="hero__float hero__float--1" data-speed="-8">
-        <img src="assets/refs/ref-hero.jpg" alt="Editorial poster layout with heavy display typography over a blueprint" />
-      </figure>
-      <figure class="hero__float hero__float--2" data-speed="12">
-        <img src="assets/refs/ref-skribbl.jpg" alt="Kinetic Typography" />
-      </figure>
-      <figure class="hero__float hero__float--3" data-speed="-5">
-        <img src="assets/refs/ref-wordle.jpg" alt="Innovative Applications" />
-      </figure>
-    </div>
-  </div>
-
-  <div class="hero__badge" id="heroBadge">
-    <svg viewBox="0 0 100 100">
-      <path id="circlePath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="none" />
-      <text><textPath href="#circlePath">DECORE • VOL 01 • DESIGN BATTLES • DECORE • VOL 01 • DESIGN BATTLES • </textPath></text>
-    </svg>
-  </div>
-
-  <div class="hero__scroll" id="heroScroll">
-    <span>Scroll</span>
-    <div class="hero__scroll-line"></div>
-  </div>
-
-  <div class="hero__corner hero__corner--tr">Vol. 01</div>
+  <p class="hero__lede">
+    Six design games. One scoreboard. <strong class="hl">Prizes worth &#8377;5,000</strong>.
+  </p>
 </section>
 
 <!-- ============ TICKER ============ -->
 <div class="ticker" aria-hidden="true">
   <div class="ticker__track" id="tickerTrack">
-    <span>Skribbl</span><i></i><span>Prizes worth &#8377;5,000</span><i></i><span>Pinterest Finds</span><i></i><span>Design Wordle</span><i></i><span>Memify</span><i></i><span>Hexcodle</span><i></i><span>No-Lift Drawing</span><i></i>
+    <span>Skribbl</span><i></i><span>Pinterest Finds</span><i></i><span>Memify</span><i></i><span>Design Wordle</span><i></i><span>Hexcodle</span><i></i><span>No-Lift Drawing</span><i></i>
   </div>
 </div>
 
 <!-- ============ MANIFESTO ============ -->
-<section class="manifesto" id="what">
+<section class="manifesto">
   <p class="scrub" id="scrubText">
     Compositions is not a workshop. It is an arena. Six design games,
-    played fast, scored live, decided in public. You bring taste.
-    We bring the scoreboard, the chocolate, and the Canva keys.
+    played fast, scored live, decided in public.
   </p>
-  <div class="manifesto__rail">
-    <span>Draw</span><span>Guess</span><span>Curate</span><span>Meme</span><span>Match</span><span>Win</span>
-  </div>
-</section>
-
-<!-- ============ DNA ============ -->
-<section class="dna" id="dna">
-  <div class="dna__head">
-    <span class="kicker">Design DNA</span>
-    <h2 class="dna__title">Visual <em class="hl">References</em></h2>
-  </div>
-  <div class="dna__grid" id="dnaGrid">
-    <figure class="dna__item" data-cursor="peek">
-      <img src="assets/refs/ref-hero.jpg" alt="Editorial Architecture" loading="lazy" />
-      <figcaption>Editorial Architecture</figcaption>
-    </figure>
-    <figure class="dna__item dna__item--tall" data-cursor="peek">
-      <img src="assets/refs/ref-skribbl.jpg" alt="Kinetic Typography" loading="lazy" />
-      <figcaption>Kinetic Typography</figcaption>
-    </figure>
-    <figure class="dna__item" data-cursor="peek">
-      <img src="assets/refs/ref-pinterest.jpg" alt="Dark Editorial" loading="lazy" />
-      <figcaption>Dark Editorial</figcaption>
-    </figure>
-    <figure class="dna__item dna__item--wide" data-cursor="peek">
-      <img src="assets/refs/ref-memify.jpg" alt="Extreme Culture" loading="lazy" />
-      <figcaption>Extreme Culture</figcaption>
-    </figure>
-    <figure class="dna__item" data-cursor="peek">
-      <img src="assets/refs/ref-wordle.jpg" alt="Innovative Applications" loading="lazy" />
-      <figcaption>Innovative Applications</figcaption>
-    </figure>
-    <figure class="dna__item dna__item--tall" data-cursor="peek">
-      <img src="assets/refs/ref-prizes.jpg" alt="Industrial Services" loading="lazy" />
-      <figcaption>Industrial Services</figcaption>
-    </figure>
-    <figure class="dna__item" data-cursor="peek">
-      <img src="assets/refs/ref-hexcodle.jpg" alt="Fashion Editorial" loading="lazy" />
-      <figcaption>Fashion Editorial</figcaption>
-    </figure>
-    <figure class="dna__item dna__item--wide" data-cursor="peek">
-      <img src="assets/refs/ref-nolift.jpg" alt="Dark Fashion" loading="lazy" />
-      <figcaption>Dark Fashion</figcaption>
-    </figure>
-  </div>
 </section>
 
 <!-- ============ MAIN STAGE: SKRIBBL ============ -->
 <section class="stage" id="skribbl">
-  <div class="stage__sticky">
-    <div class="stage__type">
-      <span class="stage__kicker">Main stage</span>
-      <h2 class="stage__word" data-split>Skribbl</h2>
-      <p class="stage__body">
-        The room draws. The room guesses. The room screams.
-        <strong class="hl">Skribbl</strong> runs on the big screen for the whole hall,
-        and every correct guess moves you up the board.
-      </p>
-      <ul class="stage__facts">
-        <li><b>Live</b> on the projector</li>
-        <li><b>Teams</b> or solo</li>
-        <li><b>Highest</b> point ceiling of the night</li>
-      </ul>
-    </div>
-    <figure class="stage__img" data-clip>
-      <img src="assets/refs/ref-skribbl.jpg" alt="Kinetic editorial layout with oversized type layered over a portrait" />
-    </figure>
+  <span class="kicker kicker--red">Main stage</span>
+  <h2 class="stage__word">Skribbl</h2>
+  <div class="stage__grid">
+    <p class="stage__body">
+      The whole hall plays at once. One person draws on the projector,
+      everyone else races to guess, and every correct call moves you up the board.
+    </p>
+    <ul class="stage__facts">
+      <li>Live on the projector</li>
+      <li>Teams or solo</li>
+      <li>Highest point ceiling of the night</li>
+    </ul>
   </div>
 </section>
 
-<!-- ============ BATTLES (horizontal pan) ============ -->
-<section class="pan" id="battles">
-  <div class="pan__head">
+<!-- ============ BATTLES ============ -->
+<section class="battles" id="battles">
+  <div class="battles__head">
     <span class="kicker">The battles</span>
-    <h2 class="pan__title">Five more ways to lose friends.</h2>
+    <h2 class="battles__title">Five more ways<br />to lose friends.</h2>
   </div>
-  <div class="pan__track" id="panTrack">
 
-    <article class="card" data-cursor="peek">
-      <span class="card__no">Pinterest Finds</span>
-      <figure class="card__img"><img src="assets/refs/ref-pinterest.jpg" alt="Dark editorial grid of cropped portraits and captions" /></figure>
-      <h3>We name it.<br />You <em class="hl">find</em> it.</h3>
-      <p>A very specific IIIT situation, or a very specific global one. Bring back the <strong class="hl">Pinterest</strong> pin that nails it. Closest read wins the room.</p>
-      <span class="btn btn--sm is-locked" style="margin-top: 1.5rem; opacity: 0.5; pointer-events: none;">Offline</span>
-    </article>
-
-    <article class="card" data-cursor="peek">
-      <span class="card__no">Memify</span>
-      <figure class="card__img"><img src="assets/refs/ref-memify.jpg" alt="Warped oversized red type on white with a centered photo" /></figure>
-      <h3>Make it<br />mean something.</h3>
-      <p>Played on <strong class="hl">makeitmeme</strong>. Same template, same timer, wildly different brains. Funniest caption takes the points.</p>
-      <a href="https://makeitmeme.com" target="_blank" class="btn btn--sm" style="margin-top: 1.5rem;">Play</a>
-    </article>
-
-    <article class="card" data-cursor="peek">
-      <span class="card__no">Design Wordle</span>
-      <figure class="card__img"><img src="assets/refs/ref-wordle.jpg" alt="Minimal grey landing page with a red interruption panel" /></figure>
-      <h3>Wordle,<br />but it <em class="hl">bites</em>.</h3>
-      <p>Our build. Design vocabulary only, and everyone races the same word at the same time. <strong class="hl">Design Wordle</strong> punishes hesitation.</p>
-      <a href="https://decore-wordle.pages.dev" target="_blank" class="btn btn--sm" style="margin-top: 1.5rem;">Play</a>
-    </article>
-
-    <article class="card" data-cursor="peek">
-      <span class="card__no">Hexcodle</span>
-      <figure class="card__img"><img src="assets/refs/ref-hexcodle.jpg" alt="Warm-toned fashion website layout with layered image panels" /></figure>
-      <h3>Guess the<br />hex. Exactly.</h3>
-      <p>Played on hexcodle. You see a colour, you type six characters, you find out how good your eyes actually are.</p>
-      <a href="https://hexergame.netlify.app" target="_blank" class="btn btn--sm" style="margin-top: 1.5rem;">Play</a>
-    </article>
-
-    <article class="card" data-cursor="peek">
-      <span class="card__no">No-Lift Drawing</span>
-      <figure class="card__img"><img src="assets/refs/ref-nolift.jpg" alt="Dark fashion editorial layout with stacked image cards" /></figure>
-      <h3>One line.<br />No mercy.</h3>
-      <p>Draw the word without lifting the pen once. Lift it and the run is dead. Best unbroken line wins.</p>
-      <a href="https://decore-nolift.pages.dev" target="_blank" class="btn btn--sm" style="margin-top: 1.5rem;">Play</a>
-    </article>
-
-  </div>
-</section>
-
-<!-- ============ POINTS ============ -->
-<section class="points" id="points">
-  <h2 class="points__title">One arena.<br /><em class="hl">One</em> scoreboard.</h2>
-  <div class="points__grid">
-    <div class="points__cell">
-      <span class="num" data-count="6">0</span>
-      <p>Events, all feeding the same running total. Skip one and you are already behind.</p>
-    </div>
-    <div class="points__cell">
-      <span class="num" data-count="1">0</span>
-      <p>Unified points system. Every win, every near-miss, one number next to your name.</p>
-    </div>
-    <div class="points__cell">
-      <span class="num" data-count="100">0</span>
-      <p>Percent of event winners walking out with chocolate, on the spot, no exceptions.</p>
-    </div>
-  </div>
-  <p class="points__note">Win an event, take the chocolate. Stack the points, take the <strong class="hl">Canva</strong>.</p>
+  <ol class="rows">
+    <li class="row">
+      <span class="row__n">01</span>
+      <h3 class="row__name">Pinterest Finds</h3>
+      <p class="row__note">We name an IIIT situation. You bring back the <strong class="hl">Pinterest</strong> pin that nails it.</p>
+      <span class="row__link row__link--none">Played live</span>
+    </li>
+    <li class="row">
+      <span class="row__n">02</span>
+      <h3 class="row__name">Memify</h3>
+      <p class="row__note">Same template, same timer, wildly different brains. Funniest caption takes the points.</p>
+      <a class="row__link" href="https://makeitmeme.com" target="_blank" rel="noopener">makeitmeme</a>
+    </li>
+    <li class="row">
+      <span class="row__n">03</span>
+      <h3 class="row__name">Design Wordle</h3>
+      <p class="row__note">Our build. Design vocabulary only, everyone racing the same word at the same time.</p>
+      <a class="row__link" href="https://decore-wordle.pages.dev" target="_blank" rel="noopener">Play</a>
+    </li>
+    <li class="row">
+      <span class="row__n">04</span>
+      <h3 class="row__name">Hexcodle</h3>
+      <p class="row__note">You see a colour, you type six characters, you find out how good your eyes actually are.</p>
+      <a class="row__link" href="https://hexergame.netlify.app" target="_blank" rel="noopener">Play</a>
+    </li>
+    <li class="row">
+      <span class="row__n">05</span>
+      <h3 class="row__name">No-Lift Drawing</h3>
+      <p class="row__note">Draw the word without lifting the pen once. Lift it and the run is dead.</p>
+      <a class="row__link" href="https://decore-nolift.pages.dev" target="_blank" rel="noopener">Play</a>
+    </li>
+  </ol>
 </section>
 
 <!-- ============ PRIZES ============ -->
 <section class="prizes" id="prizes">
-  <div class="prizes__head">
-    <span class="kicker">Prizes</span>
-    <h2 class="prizes__title"><em class="hl">Prizes worth</em><br />&#8377;5,000</h2>
+  <div class="prizes__top">
+    <div>
+      <span class="kicker">Prizes</span>
+      <h2 class="prizes__title">Prizes worth<br /><em class="hl">&#8377;5,000</em></h2>
+      <p class="prizes__lede">
+        One scoreboard runs across all six events. The three highest totals
+        at the end of the night take <strong class="hl">Canva Pro</strong>.
+      </p>
+    </div>
+    <figure class="prizes__img">
+      <img src="assets/prizes-canva.jpg" alt="Canva Pro card, chocolate bars, colour swatches and design stickers on a dark marble surface" />
+    </figure>
   </div>
 
-  <div class="bento">
-    <div class="bento__tile bento__tile--gold" data-tilt>
-      <span class="rank">1st</span>
-      <b>6 months</b>
-      <p>Canva Pro</p>
+  <ol class="podium">
+    <li class="podium__row podium__row--first">
+      <span class="podium__rank">1st</span>
+      <span class="podium__prize">6 months Canva Pro</span>
+    </li>
+    <li class="podium__row">
+      <span class="podium__rank">2nd</span>
+      <span class="podium__prize">3 months Canva Pro</span>
+    </li>
+    <li class="podium__row">
+      <span class="podium__rank">3rd</span>
+      <span class="podium__prize">1 month Canva Pro</span>
+    </li>
+  </ol>
+
+  <div class="scores">
+    <div class="scores__cell">
+      <span class="num" data-count="6">0</span>
+      <p>Events feeding one running total.</p>
     </div>
-    <div class="bento__tile" data-tilt>
-      <span class="rank">2nd</span>
-      <b>3 months</b>
-      <p>Canva Pro</p>
+    <div class="scores__cell">
+      <span class="num" data-count="3">0</span>
+      <p>Canva Pro subscriptions on the line.</p>
     </div>
-    <div class="bento__tile" data-tilt>
-      <span class="rank">3rd</span>
-      <b>1 month</b>
-      <p>Canva Pro</p>
-    </div>
-    <figure class="bento__tile bento__tile--img" data-parallax="-8">
-      <img src="assets/prizes-canva.jpg" alt="Dark theme flat lay of Canva Pro card, designer chocolates, and creative stickers" />
-    </figure>
-    <div class="bento__tile bento__tile--wide">
-      <b>Chocolate for every event winner.</b>
-      <p>Six events, six winners, six bars handed over the same night. The points are the long game.</p>
+    <div class="scores__cell">
+      <span class="num" data-count="6">0</span>
+      <p>Bars of chocolate, one per event winner, handed over the same night.</p>
     </div>
   </div>
 </section>
@@ -292,7 +173,6 @@
 <!-- ============ PLAYGROUND ============ -->
 <section class="play" id="play">
   <h2 class="play__title">Now spell it.</h2>
-  <p class="play__hint">Drag the letters into the slots.</p>
 
   <div class="play__board" id="playBoard">
     <div class="play__slots" id="playSlots">
@@ -304,28 +184,27 @@
       <span class="slot" data-letter="E">E</span>
     </div>
     <div class="play__letters" id="playLetters">
-      <button class="tile" data-letter="R" data-cursor="drag">R</button>
-      <button class="tile" data-letter="E" data-cursor="drag">E</button>
-      <button class="tile" data-letter="D" data-cursor="drag">D</button>
-      <button class="tile" data-letter="O" data-cursor="drag">O</button>
-      <button class="tile" data-letter="E" data-cursor="drag">E</button>
-      <button class="tile" data-letter="C" data-cursor="drag">C</button>
+      <button class="tile" type="button" data-letter="R" aria-label="Letter R">R</button>
+      <button class="tile" type="button" data-letter="E" aria-label="Letter E">E</button>
+      <button class="tile" type="button" data-letter="D" aria-label="Letter D">D</button>
+      <button class="tile" type="button" data-letter="O" aria-label="Letter O">O</button>
+      <button class="tile" type="button" data-letter="E" aria-label="Letter E">E</button>
+      <button class="tile" type="button" data-letter="C" aria-label="Letter C">C</button>
     </div>
+  </div>
+
+  <div class="play__foot">
     <p class="play__win" id="playWin">See you at Compositions.</p>
-    <button class="play__reset" id="playReset" data-cursor="go">Reset</button>
+    <button class="play__reset" id="playReset" type="button">Reset</button>
   </div>
 </section>
 
-<!-- ============ REGISTER / FOOTER ============ -->
+<!-- ============ FOOTER ============ -->
 <footer class="foot" id="register">
-  <h2 class="foot__title" data-split>Compositions</h2>
+  <h2 class="foot__title">Compositions</h2>
   <div class="foot__row">
-    <span class="btn btn--lg btn--invert is-locked" style="pointer-events: none;">Registration is FCFS</span>
-    <p class="foot__meta">Decore &middot; IIIT Design Society</p>
-  </div>
-  <div class="foot__base">
-    <span>Compositions, Vol. 01</span>
-    <span>Skribbl &middot; Pinterest Finds &middot; Memify &middot; Design Wordle &middot; Hexcodle &middot; No-Lift Drawing</span>
+    <p class="foot__cta">Entry is first come, first served.</p>
+    <p class="foot__meta">Decore, IIIT Design Society</p>
   </div>
 </footer>
 

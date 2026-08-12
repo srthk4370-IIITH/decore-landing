@@ -1,0 +1,49 @@
+# Compositions: Design Battles
+
+Event site for **Decore's** design battle night. Static: no build step, no bundler.
+Open `index.html`, or serve the folder with any static server.
+
+```bash
+python -m http.server 8123
+```
+
+## Structure
+
+| File | What it holds |
+| --- | --- |
+| `index.html` | All markup, one page |
+| `styles.css` | Tokens, layout, theme |
+| `main.js` | Motion layer and the drag puzzle |
+| `assets/` | Logo and the prize photograph |
+
+## Design
+
+- Palette is pulled from `logo.png`: crimson against paper and ink.
+- One theme. Light by default, tokens swap under `prefers-color-scheme: dark`.
+  No section inverts against the page.
+- Shape rule: surfaces and images are square, only pills are rounded.
+- Type: Archivo (display), Instrument Sans (UI), JetBrains Mono (labels).
+
+## Motion
+
+Kept deliberately small. Each animation has one job:
+
+- hero entry, hierarchy
+- the arc bend on `COMPOSITIONS`, the one signature move
+- ticker, carries the six event names
+- manifesto word fade, sets reading pace
+- section reveal, stops content popping in
+- counters, emphasis on the three numbers
+- drag puzzle, the payoff
+
+Everything honours `prefers-reduced-motion`.
+
+## Dependencies
+
+GSAP (ScrollTrigger, Draggable) and Lenis, both from jsDelivr. Fonts from Google Fonts.
+The page needs a network connection for those; nothing else is external.
+
+## Events
+
+Skribbl is the main stage. The rest: Pinterest Finds, Memify, Design Wordle,
+Hexcodle, No-Lift Drawing. One unified scoreboard runs across all six.
