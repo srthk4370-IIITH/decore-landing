@@ -1,21 +1,24 @@
 /* =========================================================
    Compositions: Design Battles - motion layer
 
-   Each animation has one job:
-     hero layers      -> the type reads as one moving surface, not 3 headings
-     hero parallax    -> depth between the layers and the mark
-     ticker           -> content, the six event names
-     manifesto scrub  -> sets reading pace on the one statement
-     stage image      -> slow push, keeps the main stage from sitting dead
-     sticky stack     -> each event holds the viewport on its own turn
-     counters         -> emphasis on the three numbers that matter
-     drag puzzle      -> the payoff interaction
+   The page is scroll-led. Almost everything here is scrubbed by
+   scroll position rather than fired once, so the whole thing
+   responds continuously as you move:
+
+     hero       -> type layers separate, glass letter drifts and turns
+     ticker     -> constant, carries the six event names
+     manifesto  -> words ink in at reading pace
+     main stage -> pinned sequence: word pans, image wipes open, facts land
+     battles    -> sticky stack, each card shrinks under the next
+     prizes     -> image parallax, podium rows slide in on scrub
+     footer     -> wordmark skews back to upright
    ========================================================= */
 
 gsap.registerPlugin(ScrollTrigger, Draggable);
 
 const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const FINE = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+const DESKTOP = window.matchMedia('(min-width: 900px)').matches;
 
 /* ---------------------------------------------------------
    Smooth scroll
@@ -34,37 +37,44 @@ document.querySelectorAll('a[href^="#"]').forEach((a) => {
     const target = document.querySelector(a.getAttribute('href'));
     if (!target) return;
     e.preventDefault();
-    if (lenis) lenis.scrollTo(target, { offset: -60 });
+    if (lenis) lenis.scrollTo(target, { offset: -50 });
     else target.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth' });
   });
 });
 
-/* ---------------------------------------------------------
-   Skew lives in GSAP, not just CSS, so entry and parallax
-   tweens compose with it instead of wiping it off.
-   --------------------------------------------------------- */
-gsap.set('.hero__stack .line, .foot__title', { skewX: -9 });
-gsap.set('.mark', { yPercent: -50 });
+/* Skew lives in GSAP as well as CSS, so tweens compose with it
+   instead of wiping it off the element. */
+gsap.set('.stack .line', { skewX: -9 });
+gsap.set('.glass', { yPercent: -50 });
 
 if (FINE && !REDUCED) document.body.classList.add('has-cursor');
 
 /* ---------------------------------------------------------
-   Hero entry
+   Hero
    --------------------------------------------------------- */
 if (!REDUCED) {
   gsap.timeline({ defaults: { ease: 'power4.out' } })
-    .from('.hero__meta span', { y: -12, opacity: 0, duration: 0.6, stagger: 0.06 })
-    .from('.hero__stack .line', { yPercent: 60, opacity: 0, duration: 1, stagger: 0.09 }, 0.1)
-    .from('.mark', { scale: 0.82, opacity: 0, duration: 1.1, ease: 'power3.out' }, 0.35)
-    .from('.hero__foot > *', { y: 14, opacity: 0, duration: 0.6, stagger: 0.08 }, 0.55);
+    .from('.hero__meta span', { y: -10, opacity: 0, duration: 0.6, stagger: 0.06 })
+    .from('.stack .line', { yPercent: 55, opacity: 0, duration: 1, stagger: 0.09 }, 0.1)
+    .from('.glass', { scale: 0.86, opacity: 0, duration: 1.2, ease: 'power3.out' }, 0.3)
+    .from('.hero__foot > *', { y: 12, opacity: 0, duration: 0.6, stagger: 0.08 }, 0.5);
 
-  // The layers drift apart as the hero leaves. Depth per layer, set in markup.
+  // Layers pull apart as the hero leaves.
   gsap.utils.toArray('.hero [data-depth]').forEach((el) => {
     gsap.to(el, {
-      y: () => parseFloat(el.dataset.depth) * 2.4,
+      y: () => parseFloat(el.dataset.depth) * 2.6,
       ease: 'none',
       scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 0.7 }
     });
+  });
+
+  // The glass letter turns and sinks, so it reads as a solid object in space.
+  gsap.to('#glass', {
+    y: 140,
+    rotate: -12,
+    scale: 1.18,
+    ease: 'none',
+    scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 0.8 }
   });
 }
 
@@ -91,18 +101,12 @@ if (FINE && !REDUCED) {
 }
 
 /* ---------------------------------------------------------
-   Nav flips from the dark hero to the page palette
+   Nav hairline
    --------------------------------------------------------- */
-(function nav() {
-  const el = document.getElementById('nav');
-  const hero = document.getElementById('hero');
-  ScrollTrigger.create({
-    trigger: hero,
-    start: 'bottom 68px',
-    onEnter: () => el.classList.add('is-stuck'),
-    onLeaveBack: () => el.classList.remove('is-stuck')
-  });
-})();
+ScrollTrigger.create({
+  start: 'top -60',
+  onUpdate: (self) => document.getElementById('nav').classList.toggle('is-stuck', self.scroll() > 60)
+});
 
 /* ---------------------------------------------------------
    Ticker
@@ -148,27 +152,50 @@ if (FINE && !REDUCED) {
     opacity: 1,
     ease: 'none',
     stagger: 0.5,
-    scrollTrigger: { trigger: el, start: 'top 80%', end: 'bottom 60%', scrub: 0.4 }
+    scrollTrigger: { trigger: el, start: 'top 82%', end: 'bottom 62%', scrub: 0.4 }
   });
 })();
 
 /* ---------------------------------------------------------
-   Main stage image: slow push while it crosses the viewport
+   Main stage: pinned, everything scrubbed off one timeline
    --------------------------------------------------------- */
 if (!REDUCED) {
-  // Drift, not zoom: the image is contained, so scaling it would reveal the box.
-  const img = document.querySelector('#stageImg img');
-  if (img) {
-    gsap.fromTo(img, { yPercent: -4 }, {
-      yPercent: 4,
-      ease: 'none',
-      scrollTrigger: { trigger: '#stageImg', start: 'top bottom', end: 'bottom top', scrub: true }
-    });
-  }
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '#skribbl',
+      start: 'top top',
+      end: '+=110%',
+      // Pin the inner wrapper, not the section. A pinned element keeps the
+      // width it was measured at, so pinning the section itself lets a stale
+      // measurement push the page wider than the viewport.
+      pin: '#stagePin',
+      scrub: 0.8,
+      anticipatePin: 1,
+      invalidateOnRefresh: true
+    }
+  });
+
+  // fromTo throughout, never from: this timeline is scrubbed and refreshed on
+  // resize, and a `from` tween re-records whatever the element happens to be
+  // showing at refresh time, which leaves everything stuck at opacity 0.
+  tl.fromTo('#stageBgWord', { xPercent: 2 }, { xPercent: -34, ease: 'none' }, 0)
+    .fromTo('#stageShot',
+      { clipPath: 'inset(0 0 100% 0)' },
+      { clipPath: 'inset(0 0 0% 0)', ease: 'power2.out', duration: 0.55 }, 0)
+    .fromTo('#stageShot img', { scale: 1.1 }, { scale: 1, ease: 'none', duration: 0.55 }, 0)
+    .fromTo('.stage__head > *',
+      { yPercent: 60, opacity: 0 },
+      { yPercent: 0, opacity: 1, stagger: 0.08, duration: 0.35 }, 0.05)
+    .fromTo('.stage__body',
+      { y: 20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.3 }, 0.35)
+    .fromTo('.stage__facts li',
+      { x: -24, opacity: 0 },
+      { x: 0, opacity: 1, stagger: 0.12, duration: 0.3 }, 0.45);
 }
 
 /* ---------------------------------------------------------
-   Sticky stack: the card under the incoming one shrinks back
+   Battles: sticky stack, each card shrinks under the next
    --------------------------------------------------------- */
 if (!REDUCED) {
   const panels = gsap.utils.toArray('.panel');
@@ -176,18 +203,13 @@ if (!REDUCED) {
     if (i === panels.length - 1) return;
     gsap.to(panel.querySelector('.panel__card'), {
       scale: 0.93,
-      opacity: 0.45,
+      opacity: 0.4,
       ease: 'none',
-      scrollTrigger: {
-        trigger: panels[i + 1],
-        start: 'top bottom',
-        end: 'top top',
-        scrub: true
-      }
+      scrollTrigger: { trigger: panels[i + 1], start: 'top bottom', end: 'top top', scrub: true }
     });
   });
 
-  gsap.from('.panel', {
+  gsap.from('.panel__card', {
     y: 40,
     opacity: 0,
     duration: 0.7,
@@ -198,28 +220,62 @@ if (!REDUCED) {
 }
 
 /* ---------------------------------------------------------
-   Section reveal: one move, once
+   Prizes: parallax on the photograph, podium rows on scrub
    --------------------------------------------------------- */
 if (!REDUCED) {
-  const targets = [
-    '.stage__head', '.stage__img', '.stage__grid',
-    '.stack__head',
-    '.prizes__top > div', '.prizes__img', '.podium', '.scores',
-    '.play__title', '.play__board',
-    '.foot__title', '.foot__row'
-  ];
+  const img = document.querySelector('.prizes__img img');
+  if (img) {
+    gsap.fromTo(img, { yPercent: -8 }, {
+      yPercent: 8,
+      ease: 'none',
+      scrollTrigger: { trigger: '.prizes__img', start: 'top bottom', end: 'bottom top', scrub: true }
+    });
+  }
 
-  targets.forEach((selector) => {
-    gsap.utils.toArray(selector).forEach((el) => {
-      gsap.from(el, {
-        y: 18,
-        opacity: 0,
-        duration: 0.65,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+  gsap.utils.toArray('.podium__row').forEach((row) => {
+    gsap.fromTo(row,
+      { x: -28, opacity: 0 },
+      {
+        x: 0, opacity: 1, ease: 'power2.out',
+        scrollTrigger: { trigger: row, start: 'top 92%', end: 'top 62%', scrub: 0.6 }
+      });
+  });
+
+  gsap.utils.toArray('.trade__list li').forEach((li) => {
+    gsap.fromTo(li,
+      { x: 24, opacity: 0 },
+      {
+        x: 0, opacity: 1, ease: 'power2.out',
+        scrollTrigger: { trigger: li, start: 'top 94%', end: 'top 70%', scrub: 0.6 }
+      });
+  });
+}
+
+/* ---------------------------------------------------------
+   Section reveal for the remaining blocks
+   --------------------------------------------------------- */
+if (!REDUCED) {
+  ['.battles__head', '.prizes > .kicker', '.prizes__title', '.prizes__lede',
+   '.trade__title', '.trade__body', '.play__title', '.play__board']
+    .forEach((selector) => {
+      gsap.utils.toArray(selector).forEach((el) => {
+        gsap.from(el, {
+          y: 18,
+          opacity: 0,
+          duration: 0.6,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 90%', once: true }
+        });
       });
     });
-  });
+
+  // Footer wordmark straightens as it arrives.
+  gsap.fromTo('.foot__title',
+    { skewX: -18, yPercent: 18, opacity: 0 },
+    {
+      skewX: -9, yPercent: 0, opacity: 1, ease: 'none',
+      scrollTrigger: { trigger: '.foot__title', start: 'top 95%', end: 'top 55%', scrub: 0.6 }
+    });
 }
 
 /* ---------------------------------------------------------
@@ -234,7 +290,7 @@ document.querySelectorAll('[data-count]').forEach((el) => {
     duration: 1.1,
     ease: 'power2.out',
     onUpdate: () => { el.textContent = Math.round(obj.v); },
-    scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+    scrollTrigger: { trigger: el, start: 'top 90%', once: true }
   });
 });
 
@@ -260,7 +316,7 @@ document.querySelectorAll('[data-count]').forEach((el) => {
   /** Nearest free slot that wants this tile's letter, if it is close enough. */
   function targetSlot(tile) {
     const c = centre(tile);
-    const reach = rect(tile).width * 0.85;
+    const reach = rect(tile).width * 0.9;
     let best = null;
     let bestDistance = Infinity;
 
@@ -278,8 +334,8 @@ document.querySelectorAll('[data-count]').forEach((el) => {
   function scatter() {
     const bw = board.clientWidth;
     const bh = board.clientHeight;
-    const size = rect(tiles[0]).width || 80;
-    const top = (slots[0] ? rect(slots[0]).height : size) + 48;
+    const size = rect(tiles[0]).width || 60;
+    const top = (slots[0] ? rect(slots[0]).height : size) + 40;
     const laneW = Math.max(bw - size, 1);
     const laneH = Math.max(bh - top - size, 1);
     const clamp = (v, max) => Math.max(0, Math.min(v, max));
@@ -353,7 +409,7 @@ document.querySelectorAll('[data-count]').forEach((el) => {
     });
   }
 
-  // Keyboard and tap path, so the puzzle is not drag-only.
+  // Tap and keyboard path, so the puzzle is not drag-only on touch.
   tiles.forEach((tile) => {
     tile.addEventListener('click', () => {
       if (tile.dataset.placed) return;

@@ -1,8 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0B0A0A" />
 <title>Compositions: Design Battles - Decore</title>
 <meta name="description" content="Compositions is Decore's design battle arena. Six events, one scoreboard, prizes worth 5,000 rupees. Skribbl on the main stage." />
 <meta property="og:title" content="Compositions: Design Battles" />
@@ -31,7 +32,7 @@
     <a href="#battles">Battles</a>
     <a href="#prizes">Prizes</a>
   </nav>
-  <span class="tag">Entry is first come, first served</span>
+  <span class="tag">First come, first served</span>
 </header>
 
 <main id="top">
@@ -44,16 +45,21 @@
     <span>Vol.<br />001</span>
   </div>
 
-  <h1 class="hero__stack" aria-label="Compositions: Design Battles">
-    <span class="line line--ghost" data-depth="26" aria-hidden="true">Compositions</span>
-    <span class="mark" data-depth="-40" aria-hidden="true">
-      <img src="assets/logo.png" alt="" />
-    </span>
-    <span class="line line--solid" data-depth="12" aria-hidden="true">Design</span>
-    <span class="line line--solid line--last" data-depth="-8" aria-hidden="true">
-      Battles<i class="slashes">////</i>
-    </span>
-  </h1>
+  <div class="hero__art">
+    <h1 class="stack" aria-label="Compositions: Design Battles">
+      <span class="line line--ghost" data-depth="30" aria-hidden="true">Compositions</span>
+      <span class="line line--solid" data-depth="14" aria-hidden="true">Design</span>
+      <span class="line line--red" data-depth="-10" aria-hidden="true">Battles<i class="slashes">////</i></span>
+    </h1>
+
+    <!-- Glass letter. Three copies of one glyph stacked in place: coloured
+         bloom, iridescent body, bright rim. -->
+    <div class="glass" id="glass" aria-hidden="true">
+      <span class="glass__bloom">D</span>
+      <span class="glass__body">D</span>
+      <span class="glass__edge">D</span>
+    </div>
+  </div>
 
   <div class="hero__foot">
     <p class="hero__lede">Six design games, played fast and scored live.</p>
@@ -76,108 +82,112 @@
   </p>
 </section>
 
-<!-- ============ MAIN STAGE: SKRIBBL ============ -->
+<!-- ============ MAIN STAGE: SKRIBBL (pinned scroll sequence) ============ -->
 <section class="stage" id="skribbl">
-  <div class="stage__head">
-    <span class="kicker kicker--red">Main stage</span>
-    <h2 class="stage__word">Skribbl</h2>
-  </div>
+  <div class="stage__pin" id="stagePin">
+    <span class="stage__bgword" id="stageBgWord" aria-hidden="true">Skribbl&nbsp;Skribbl&nbsp;Skribbl</span>
 
-  <div class="stage__grid">
-    <figure class="stage__img" id="stageImg">
-      <img src="assets/events/skribbl.jpg" alt="A Skribbl round in progress: a crude red drawing of Lightning McQueen with the word DIE above it" />
-    </figure>
+    <div class="stage__inner">
+      <div class="stage__head">
+        <span class="kicker kicker--red">Main stage</span>
+        <h2 class="stage__title">Skribbl</h2>
+      </div>
 
-    <div class="stage__copy">
-      <p class="stage__body">
-        The whole hall plays at once. One person draws on the projector,
-        everyone else races to guess, and every correct call moves you up the board.
-      </p>
-      <ul class="stage__facts">
-        <li>Live on the projector</li>
-        <li>Teams or solo</li>
-        <li>Highest point ceiling of the night</li>
-      </ul>
+      <figure class="stage__shot" id="stageShot">
+        <img src="assets/events/skribbl.jpg" alt="A Skribbl round in progress: a crude red drawing of Lightning McQueen with the word DIE above it" />
+      </figure>
+
+      <div class="stage__copy">
+        <p class="stage__body">
+          The whole hall plays at once. One person draws on the projector,
+          everyone else races to guess.
+        </p>
+        <ul class="stage__facts">
+          <li><span>01</span> Live on the projector</li>
+          <li><span>02</span> Teams or solo</li>
+          <li><span>03</span> Highest point ceiling of the night</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ============ BATTLES: sticky stack ============ -->
-<section class="stack" id="battles">
-  <div class="stack__head">
+<section class="battles" id="battles">
+  <div class="battles__head">
     <span class="kicker">The battles</span>
-    <h2 class="stack__title">Five more ways to lose friends.</h2>
+    <h2 class="battles__title">Five more ways to lose friends.</h2>
   </div>
 
-  <div class="stack__list" id="stackList">
+  <div class="battles__list" id="stackList">
 
     <article class="panel">
       <div class="panel__card">
-        <div class="panel__text">
-          <span class="panel__n">01</span>
-          <h3 class="panel__name">Pinterest Finds</h3>
-          <p class="panel__note">We name an IIIT situation. You bring back the Pinterest pin that nails it, and the room decides who read it right.</p>
-          <span class="panel__link panel__link--none">Played live</span>
-        </div>
         <figure class="panel__img" style="--shot: url(assets/events/pinterest.jpg)">
           <img src="assets/events/pinterest.jpg" alt="The Mona Lisa edited to have enormous bodybuilder arms" loading="lazy" />
         </figure>
+        <div class="panel__text">
+          <span class="panel__n">01</span>
+          <h3 class="panel__name">Pinterest Finds</h3>
+          <p class="panel__note">We name an IIIT situation. You bring back the pin that nails it, and the room decides who read it right.</p>
+          <span class="panel__link panel__link--none">Played live</span>
+        </div>
       </div>
     </article>
 
     <article class="panel">
       <div class="panel__card">
+        <figure class="panel__img" style="--shot: url(assets/events/memify.jpg)">
+          <img src="assets/events/memify.jpg" alt="A meme of a man pressing his fingers to his temples captioned clock it" loading="lazy" />
+        </figure>
         <div class="panel__text">
           <span class="panel__n">02</span>
           <h3 class="panel__name">Memify</h3>
           <p class="panel__note">Same template, same timer, wildly different brains. Funniest caption takes the points.</p>
           <a class="panel__link" href="https://makeitmeme.com" target="_blank" rel="noopener">makeitmeme</a>
         </div>
-        <figure class="panel__img" style="--shot: url(assets/events/memify.jpg)">
-          <img src="assets/events/memify.jpg" alt="A meme of a man pressing his fingers to his temples captioned clock it" loading="lazy" />
-        </figure>
       </div>
     </article>
 
     <article class="panel">
       <div class="panel__card">
+        <figure class="panel__img" style="--shot: url(assets/events/wordle.jpg)">
+          <img src="assets/events/wordle.jpg" alt="A Wordle board where every guess ends in the same four letters" loading="lazy" />
+        </figure>
         <div class="panel__text">
           <span class="panel__n">03</span>
           <h3 class="panel__name">Design Wordle</h3>
           <p class="panel__note">Our build. Design vocabulary only, everyone racing the same word at the same time.</p>
           <a class="panel__link" href="https://decore-wordle.pages.dev" target="_blank" rel="noopener">Play</a>
         </div>
-        <figure class="panel__img" style="--shot: url(assets/events/wordle.jpg)">
-          <img src="assets/events/wordle.jpg" alt="A Wordle board where every guess ends in the same four letters" loading="lazy" />
-        </figure>
       </div>
     </article>
 
     <article class="panel">
       <div class="panel__card">
+        <figure class="panel__img" style="--shot: url(assets/events/hexcodle.jpg)">
+          <img src="assets/events/hexcodle.jpg" alt="White text on black reading things aren't always hex 000000 and hex FFFFFF" loading="lazy" />
+        </figure>
         <div class="panel__text">
           <span class="panel__n">04</span>
           <h3 class="panel__name">Hexcodle</h3>
           <p class="panel__note">You see a colour, you type six characters, you find out how good your eyes actually are.</p>
           <a class="panel__link" href="https://hexergame.netlify.app" target="_blank" rel="noopener">Play</a>
         </div>
-        <figure class="panel__img" style="--shot: url(assets/events/hexcodle.jpg)">
-          <img src="assets/events/hexcodle.jpg" alt="White text on black reading things aren't always hex 000000 and hex FFFFFF" loading="lazy" />
-        </figure>
       </div>
     </article>
 
     <article class="panel">
       <div class="panel__card">
+        <figure class="panel__img" style="--shot: url(assets/events/nolift.png)">
+          <img src="assets/events/nolift.png" alt="A single-line pencil drawing of a heavily muscled Peppa Pig" loading="lazy" />
+        </figure>
         <div class="panel__text">
           <span class="panel__n">05</span>
           <h3 class="panel__name">No-Lift Drawing</h3>
           <p class="panel__note">Draw the word without lifting the pen once. Lift it and the run is dead.</p>
           <a class="panel__link" href="https://decore-nolift.pages.dev" target="_blank" rel="noopener">Play</a>
         </div>
-        <figure class="panel__img" style="--shot: url(assets/events/nolift.png)">
-          <img src="assets/events/nolift.png" alt="A single-line pencil drawing of a heavily muscled Peppa Pig" loading="lazy" />
-        </figure>
       </div>
     </article>
 
@@ -186,19 +196,16 @@
 
 <!-- ============ PRIZES ============ -->
 <section class="prizes" id="prizes">
-  <div class="prizes__top">
-    <div>
-      <span class="kicker">Prizes</span>
-      <h2 class="prizes__title">Prizes worth<br /><em>&#8377;5,000</em></h2>
-      <p class="prizes__lede">
-        One scoreboard runs across all six events. The three highest totals
-        at the end of the night take Canva Pro.
-      </p>
-    </div>
-    <figure class="prizes__img">
-      <img src="assets/prizes-canva.jpg" alt="Canva Pro card, chocolate bars, colour swatches and design stickers on a dark marble surface" />
-    </figure>
-  </div>
+  <span class="kicker">Prizes</span>
+  <h2 class="prizes__title">Prizes worth <em>&#8377;5,000</em></h2>
+  <p class="prizes__lede">
+    One scoreboard runs across all six events. The three highest totals
+    at the end of the night take Canva Pro.
+  </p>
+
+  <figure class="prizes__img">
+    <img src="assets/prizes-canva.jpg" alt="Canva Pro card, chocolate bars, colour swatches and design stickers on a dark marble surface" loading="lazy" />
+  </figure>
 
   <ol class="podium">
     <li class="podium__row podium__row--first">
@@ -215,6 +222,20 @@
     </li>
   </ol>
 
+  <div class="trade">
+    <h3 class="trade__title">Chocolate is unlimited.</h3>
+    <p class="trade__body">
+      Points are a currency, not just a ranking. Spend them at the counter on
+      chocolate or finger puppets as often as you like, and still keep climbing
+      toward Canva Pro.
+    </p>
+    <ul class="trade__list">
+      <li><span>Chocolate</span> Unlimited, all night</li>
+      <li><span>Finger puppets</span> Trade your points</li>
+      <li><span>Canva Pro</span> Top three totals</li>
+    </ul>
+  </div>
+
   <div class="scores">
     <div class="scores__cell">
       <span class="num" data-count="6">0</span>
@@ -225,8 +246,8 @@
       <p>Canva Pro subscriptions on the line.</p>
     </div>
     <div class="scores__cell">
-      <span class="num" data-count="6">0</span>
-      <p>Bars of chocolate, one per event winner, handed over the same night.</p>
+      <span class="num num--static">&#8734;</span>
+      <p>Cap on how much chocolate you can trade for.</p>
     </div>
   </div>
 </section>

@@ -16,31 +16,45 @@ python -m http.server 8123
 | `main.js` | Motion layer and the drag puzzle |
 | `assets/` | Logo, prize photograph, and one screenshot per event |
 
+## Layout
+
+Mobile first. Base rules are the phone layout; larger screens are additive
+`min-width` blocks at 600px, 900px and 1200px. `--pad` and `--gap` step up at
+those breakpoints so the vertical rhythm scales with the viewport.
+
 ## Design
 
-- Palette is pulled from `logo.png`: crimson against paper and ink.
-- One theme. Light by default, tokens swap under `prefers-color-scheme: dark`.
-  Contrast blocks (hero, main stage, playground) use `--inv-*` so they flip
-  with the theme instead of inverting against it.
+- One palette, dark throughout. Alternating light and dark sections is what
+  made the page read as three different sites stitched together.
+- Crimson comes from `logo.png`.
 - Shape rule: surfaces and images are square, only pills are rounded.
 - Type: Anton (display), Space Grotesk (UI), Space Mono (labels).
-- The hero is three overlapping skewed type layers with the logo mark sitting
-  between them. The back layer is stroke-only with a chromatic edge.
+- The hero is three overlapping skewed type layers with a glass letter threaded
+  between them: three copies of one glyph stacked as bloom, iridescent body and
+  bright rim. The back type layer is stroke-only with a chromatic edge.
 - Event screenshots are `contain`, never `cover`: cropping one crops the joke
   out of it. A blurred copy of the same image fills the leftover box.
 
 ## Motion
 
-Each animation has one job:
+The page is scroll-led. Most of this is scrubbed by scroll position rather than
+fired once, so the page responds continuously as you move.
 
-- hero layers and parallax, the type reads as one surface with depth
+- hero, type layers separate and the glass letter drifts and turns
 - ticker, carries the six event names
-- manifesto word fade, sets reading pace
-- main stage image drift
-- sticky stack, each event holds the viewport on its own turn
-- section reveal, stops content popping in
-- counters, emphasis on the three numbers
-- drag puzzle, the payoff
+- manifesto, words ink in at reading pace
+- main stage, pinned sequence: the word pans, the image wipes open, facts land
+- battles, sticky stack where each card shrinks under the next
+- prizes, photograph parallax and podium rows on scrub
+- footer, the wordmark skews back toward upright
+
+Two traps worth remembering if you edit `main.js`:
+
+- Inside a scrubbed, refreshing timeline use `fromTo`, never `from`. A `from`
+  tween re-records whatever the element shows at refresh time and sticks at
+  opacity 0.
+- Pin an inner wrapper, not a section. A pinned element keeps the width it was
+  measured at, and a stale measurement pushes the page wider than the viewport.
 
 Everything honours `prefers-reduced-motion`.
 
