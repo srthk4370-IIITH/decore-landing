@@ -14,24 +14,30 @@ python -m http.server 8123
 | `index.html` | All markup, one page |
 | `styles.css` | Tokens, layout, theme |
 | `main.js` | Motion layer and the drag puzzle |
-| `assets/` | Logo and the prize photograph |
+| `assets/` | Logo, prize photograph, and one screenshot per event |
 
 ## Design
 
 - Palette is pulled from `logo.png`: crimson against paper and ink.
 - One theme. Light by default, tokens swap under `prefers-color-scheme: dark`.
-  No section inverts against the page.
+  Contrast blocks (hero, main stage, playground) use `--inv-*` so they flip
+  with the theme instead of inverting against it.
 - Shape rule: surfaces and images are square, only pills are rounded.
-- Type: Archivo (display), Instrument Sans (UI), JetBrains Mono (labels).
+- Type: Anton (display), Space Grotesk (UI), Space Mono (labels).
+- The hero is three overlapping skewed type layers with the logo mark sitting
+  between them. The back layer is stroke-only with a chromatic edge.
+- Event screenshots are `contain`, never `cover`: cropping one crops the joke
+  out of it. A blurred copy of the same image fills the leftover box.
 
 ## Motion
 
-Kept deliberately small. Each animation has one job:
+Each animation has one job:
 
-- hero entry, hierarchy
-- the arc bend on `COMPOSITIONS`, the one signature move
+- hero layers and parallax, the type reads as one surface with depth
 - ticker, carries the six event names
 - manifesto word fade, sets reading pace
+- main stage image drift
+- sticky stack, each event holds the viewport on its own turn
 - section reveal, stops content popping in
 - counters, emphasis on the three numbers
 - drag puzzle, the payoff

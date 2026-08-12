@@ -1,15 +1,15 @@
 /* =========================================================
    Compositions: Design Battles - motion layer
 
-   Deliberately small. Every animation below has one job:
-     hero entry      -> hierarchy, names the event first
-     arc bend        -> the one signature move, driven by scroll
-     ticker          -> content, the six event names
-     manifesto scrub -> sets reading pace on the one statement
-     section reveal  -> stops content popping in
-     counters        -> emphasis on the three numbers that matter
-     drag puzzle     -> the payoff interaction
-   Nothing else moves.
+   Each animation has one job:
+     hero layers      -> the type reads as one moving surface, not 3 headings
+     hero parallax    -> depth between the layers and the mark
+     ticker           -> content, the six event names
+     manifesto scrub  -> sets reading pace on the one statement
+     stage image      -> slow push, keeps the main stage from sitting dead
+     sticky stack     -> each event holds the viewport on its own turn
+     counters         -> emphasis on the three numbers that matter
+     drag puzzle      -> the payoff interaction
    ========================================================= */
 
 gsap.registerPlugin(ScrollTrigger, Draggable);
@@ -40,64 +40,36 @@ document.querySelectorAll('a[href^="#"]').forEach((a) => {
 });
 
 /* ---------------------------------------------------------
-   Hero word: two layers per letter so the entry tween and the
-   arc transform never fight over the same `transform`.
+   Skew lives in GSAP, not just CSS, so entry and parallax
+   tweens compose with it instead of wiping it off.
    --------------------------------------------------------- */
-const arcEl = document.getElementById('arcWord');
-const arcOuter = [];
-const arcInner = [];
+gsap.set('.hero__stack .line, .foot__title', { skewX: -9 });
+gsap.set('.mark', { yPercent: -50 });
 
-[...'COMPOSITIONS'].forEach((c) => {
-  const outer = document.createElement('span');
-  const inner = document.createElement('span');
-  inner.className = 'arc__i';
-  inner.textContent = c;
-  outer.setAttribute('aria-hidden', 'true');
-  outer.appendChild(inner);
-  arcEl.appendChild(outer);
-  arcOuter.push(outer);
-  arcInner.push(inner);
-});
-
-/** t runs -1 to 1 across the word. k scales how hard the arc bends. */
-function applyArc(k) {
-  const c = (arcInner.length - 1) / 2;
-  arcInner.forEach((el, i) => {
-    const t = (i - c) / c;
-    el.style.transform = `translateY(${t * t * 8 * k}%) rotate(${t * 6 * k}deg)`;
-  });
-}
-applyArc(1);
+if (FINE && !REDUCED) document.body.classList.add('has-cursor');
 
 /* ---------------------------------------------------------
    Hero entry
    --------------------------------------------------------- */
-if (FINE && !REDUCED) document.body.classList.add('has-cursor');
-
 if (!REDUCED) {
-  gsap.timeline()
-    .from(arcOuter, {
-      yPercent: 105,
-      duration: 0.9,
-      ease: 'power4.out',
-      stagger: { each: 0.03, from: 'center' }
-    })
-    .from('.hero__brand, .hero__sub, .hero__lede', {
-      y: 14, opacity: 0, duration: 0.6, ease: 'power3.out', stagger: 0.07
-    }, 0.2);
+  gsap.timeline({ defaults: { ease: 'power4.out' } })
+    .from('.hero__meta span', { y: -12, opacity: 0, duration: 0.6, stagger: 0.06 })
+    .from('.hero__stack .line', { yPercent: 60, opacity: 0, duration: 1, stagger: 0.09 }, 0.1)
+    .from('.mark', { scale: 0.82, opacity: 0, duration: 1.1, ease: 'power3.out' }, 0.35)
+    .from('.hero__foot > *', { y: 14, opacity: 0, duration: 0.6, stagger: 0.08 }, 0.55);
 
-  // The arc bends a little further as the hero leaves. One scrub, small range.
-  ScrollTrigger.create({
-    trigger: '#hero',
-    start: 'top top',
-    end: 'bottom top',
-    scrub: 0.6,
-    onUpdate: (self) => applyArc(1 + self.progress * 0.9)
+  // The layers drift apart as the hero leaves. Depth per layer, set in markup.
+  gsap.utils.toArray('.hero [data-depth]').forEach((el) => {
+    gsap.to(el, {
+      y: () => parseFloat(el.dataset.depth) * 2.4,
+      ease: 'none',
+      scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 0.7 }
+    });
   });
 }
 
 /* ---------------------------------------------------------
-   Cursor: a single ring, slightly larger over links
+   Cursor
    --------------------------------------------------------- */
 if (FINE && !REDUCED) {
   const cursor = document.getElementById('cursor');
@@ -112,19 +84,25 @@ if (FINE && !REDUCED) {
     x(e.clientX); y(e.clientY);
   }, { passive: true });
 
-  document.querySelectorAll('a, button, .row').forEach((el) => {
+  document.querySelectorAll('a, button, .panel__card').forEach((el) => {
     el.addEventListener('pointerenter', () => gsap.to(cursor, { scale: 1.9, duration: 0.24, ease: 'power3.out' }));
     el.addEventListener('pointerleave', () => gsap.to(cursor, { scale: 1, duration: 0.24, ease: 'power3.out' }));
   });
 }
 
 /* ---------------------------------------------------------
-   Nav hairline once the page has moved
+   Nav flips from the dark hero to the page palette
    --------------------------------------------------------- */
-ScrollTrigger.create({
-  start: 'top -80',
-  onUpdate: (self) => document.getElementById('nav').classList.toggle('is-stuck', self.scroll() > 80)
-});
+(function nav() {
+  const el = document.getElementById('nav');
+  const hero = document.getElementById('hero');
+  ScrollTrigger.create({
+    trigger: hero,
+    start: 'bottom 68px',
+    onEnter: () => el.classList.add('is-stuck'),
+    onLeaveBack: () => el.classList.remove('is-stuck')
+  });
+})();
 
 /* ---------------------------------------------------------
    Ticker
@@ -144,7 +122,7 @@ ScrollTrigger.create({
 })();
 
 /* ---------------------------------------------------------
-   Manifesto: words ink in at scroll pace
+   Manifesto
    --------------------------------------------------------- */
 (function manifesto() {
   const el = document.getElementById('scrubText');
@@ -175,12 +153,57 @@ ScrollTrigger.create({
 })();
 
 /* ---------------------------------------------------------
-   Section reveal: one move, once, everywhere
+   Main stage image: slow push while it crosses the viewport
+   --------------------------------------------------------- */
+if (!REDUCED) {
+  // Drift, not zoom: the image is contained, so scaling it would reveal the box.
+  const img = document.querySelector('#stageImg img');
+  if (img) {
+    gsap.fromTo(img, { yPercent: -4 }, {
+      yPercent: 4,
+      ease: 'none',
+      scrollTrigger: { trigger: '#stageImg', start: 'top bottom', end: 'bottom top', scrub: true }
+    });
+  }
+}
+
+/* ---------------------------------------------------------
+   Sticky stack: the card under the incoming one shrinks back
+   --------------------------------------------------------- */
+if (!REDUCED) {
+  const panels = gsap.utils.toArray('.panel');
+  panels.forEach((panel, i) => {
+    if (i === panels.length - 1) return;
+    gsap.to(panel.querySelector('.panel__card'), {
+      scale: 0.93,
+      opacity: 0.45,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: panels[i + 1],
+        start: 'top bottom',
+        end: 'top top',
+        scrub: true
+      }
+    });
+  });
+
+  gsap.from('.panel', {
+    y: 40,
+    opacity: 0,
+    duration: 0.7,
+    ease: 'power3.out',
+    stagger: 0.05,
+    scrollTrigger: { trigger: '#stackList', start: 'top 85%', once: true }
+  });
+}
+
+/* ---------------------------------------------------------
+   Section reveal: one move, once
    --------------------------------------------------------- */
 if (!REDUCED) {
   const targets = [
-    '.stage .kicker', '.stage__word', '.stage__grid',
-    '.battles__head', '.row',
+    '.stage__head', '.stage__img', '.stage__grid',
+    '.stack__head',
     '.prizes__top > div', '.prizes__img', '.podium', '.scores',
     '.play__title', '.play__board',
     '.foot__title', '.foot__row'
@@ -264,7 +287,6 @@ document.querySelectorAll('[data-count]').forEach((el) => {
     tiles.forEach((tile, i) => {
       tile.classList.remove('is-locked', 'is-dragging');
       delete tile.dataset.placed;
-      // Spread across the width in order, jitter the depth so it reads scattered.
       const lane = tiles.length > 1 ? i / (tiles.length - 1) : 0;
       gsap.set(tile, {
         x: 0,
@@ -277,8 +299,8 @@ document.querySelectorAll('[data-count]').forEach((el) => {
 
     slots.forEach((s) => s.classList.remove('is-filled', 'is-near'));
     win.classList.remove('is-on');
-    // Draggable caches each element's offset when it is created, so anything
-    // that moves a tile afterwards has to tell it to re-measure.
+    // Draggable caches each element's offset when created, so anything that
+    // moves a tile afterwards has to tell it to re-measure.
     draggables.forEach((d) => { d.enable(); d.update(true); });
   }
 
@@ -290,7 +312,6 @@ document.querySelectorAll('[data-count]').forEach((el) => {
     const t = rect(tile);
     const s = rect(slot);
     gsap.to(tile, {
-      // Relative move: the tile keeps whatever x/y the drag left it with.
       x: `+=${s.left - t.left}`,
       y: `+=${s.top - t.top}`,
       rotation: 0,
@@ -332,7 +353,7 @@ document.querySelectorAll('[data-count]').forEach((el) => {
     });
   }
 
-  // Keyboard path, so the puzzle is not mouse-only.
+  // Keyboard and tap path, so the puzzle is not drag-only.
   tiles.forEach((tile) => {
     tile.addEventListener('click', () => {
       if (tile.dataset.placed) return;
@@ -349,9 +370,6 @@ document.querySelectorAll('[data-count]').forEach((el) => {
 
   reset.addEventListener('click', init);
 
-  // Lay out immediately so the puzzle is never left stacked at the origin, then
-  // again once the display face and images have settled the box sizes. init is
-  // idempotent, so running it more than once is harmless.
   init();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(init);
   window.addEventListener('load', init);
@@ -359,7 +377,6 @@ document.querySelectorAll('[data-count]').forEach((el) => {
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
-    // Only re-lay-out while nothing is placed, so a resize never wipes progress.
     resizeTimer = setTimeout(() => {
       if (tiles.every((t) => !t.dataset.placed)) init();
     }, 200);
